@@ -1,0 +1,68 @@
+/* Base Global Styles */
+:root {
+  /* Color Palette (Simplified Example) */
+  --color-primary: #0F7938; /* Eco Green */
+  --color-secondary: #00897B; /* Teal */
+  --color-accent: #FF9800; /* Orange */
+  --color-text: #333;
+  --color-text-light: #fff;
+  --color-background: #fdfdfc;
+  --color-surface: #fff;
+  --color-border: #eee;
+  
+  /* Spacing */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-64: 4rem;
+
+  /* Typography */
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.8rem;
+  --font-size-2xl: 2.5rem;
+  --font-size-3xl: 3.5rem;
+  --font-weight-bold: 700;
+
+  /* Shadow */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Base Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout Containers */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main-content {
+  flex-grow: 1; /* Ensures content pushes the footer down */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-24);
+}
+
+/* Links and Buttons Base Styling */
+a {
+  text-decoration: none;
+  color: var(--color-primary);
+}

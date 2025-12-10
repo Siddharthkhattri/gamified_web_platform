@@ -1,0 +1,229 @@
+/* Using the provided roleselection.css content */
+:root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(4, 149, 161, 1);
+  --color-green-500: rgba(0, 137, 85, 1);
+  --color-green-600: rgba(0, 119, 74, 1);
+  --color-green-700: rgba(0, 100, 63, 1);
+  --color-red-500: rgba(244, 67, 54, 1);
+  --color-red-600: rgba(211, 47, 47, 1);
+  
+  /* Semantic Tokens */
+  --color-surface: var(--color-white);
+  --color-background: var(--color-cream-100);
+  --color-primary: var(--color-green-600);
+  --color-secondary: var(--color-teal-400);
+  --color-text: var(--color-charcoal-800);
+  --color-text-subtle: var(--color-slate-500);
+  --color-border: var(--color-gray-200);
+
+  /* Spacing (Rems) */
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 3rem;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Shadow */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Page Layout */
+.role-selection-page {
+  background-color: var(--color-background);
+  min-height: calc(100vh - 70px); /* Adjust for fixed navbar height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-64) var(--space-24);
+}
+
+.role-selection-container {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Header */
+.role-header {
+  margin-bottom: var(--space-48);
+}
+
+.role-header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-16);
+}
+
+.role-header p {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-subtle);
+}
+
+/* Grid */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-24);
+  margin-bottom: var(--space-48);
+}
+
+/* Card Style */
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-32);
+  background-color: var(--color-surface);
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--role-color, var(--color-primary));
+}
+
+.role-icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-16);
+  color: var(--role-color, var(--color-primary));
+}
+
+.role-card h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-12);
+}
+
+.role-card p {
+  font-size: var(--font-size-md);
+  color: var(--color-text-subtle);
+  flex-grow: 1;
+}
+
+.role-arrow {
+  margin-top: var(--space-16);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--role-color, var(--color-primary));
+}
+
+/* Footer Link */
+.role-footer p {
+  font-size: var(--font-size-md);
+  color: var(--color-text-subtle);
+}
+
+.role-footer a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.role-footer a:hover {
+  color: var(--color-green-700);
+  text-decoration: underline;
+}
+
+/*=============================================
+   RESPONSIVE
+   ============================================ */
+
+
+@media (max-width: 992px) {
+  .roles-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-20);
+  }
+}
+
+@media (max-width: 768px) {
+  .role-selection-page {
+    padding: var(--space-24) var(--space-16);
+  }
+
+  .role-header {
+    margin-bottom: var(--space-24);
+  }
+
+  .role-header h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .role-header p {
+    font-size: var(--font-size-md);
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+  }
+
+  .role-card {
+    padding: var(--space-20);
+  }
+
+  .role-icon {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .role-selection-page {
+    padding: var(--space-16) var(--space-12);
+  }
+
+  .role-header {
+    margin-bottom: var(--space-20);
+  }
+
+  .role-header h1 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-12);
+  }
+
+  .role-header p {
+    font-size: var(--font-size-sm);
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    margin-bottom: var(--space-32);
+  }
+}
