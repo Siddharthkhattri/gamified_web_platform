@@ -1,360 +1,238 @@
 import React, { useState } from 'react';
-import { 
-  Building2, 
-  Users, 
-  Leaf, 
-  FileText, 
-  BarChart3, 
-  ArrowUpRight, 
-  ArrowRight,
-  Menu,
-  X,
-  Bell,
-  Search,
-  ChevronDown
-} from 'lucide-react';
 
 /**
- * MOCK DATA & ASSETS
+ * INTERNAL ICONS (No external libraries needed)
  * ------------------------------------------------------------------
  */
-const MOCK_DATA = {
-  totalParticipation: "50,000",
-  registeredSchools: 120,
-  avgEcoScore: 78,
-  monthlyGrowth: [
-    { month: 'Jan', value: 40 },
-    { month: 'Feb', value: 45 },
-    { month: 'Mar', value: 55 },
-    { month: 'Apr', value: 60 },
-    { month: 'May', value: 78 },
-    { month: 'Jun', value: 85 },
-  ]
-};
-
-/**
- * REUSABLE UI COMPONENTS
- * ------------------------------------------------------------------
- */
-
-const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-xl border border-slate-200 shadow-sm ${className}`}>
-    {children}
-  </div>
-);
-
-const Badge = ({ children, type = "neutral" }) => {
-  const styles = {
-    success: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    neutral: "bg-slate-50 text-slate-600 border-slate-200",
-  };
-  return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border ${styles[type] || styles.neutral}`}>
-      {children}
-    </span>
-  );
-};
-
-// A custom, lightweight SVG Line Chart component
-const TrendChart = ({ data, color = "#059669" }) => {
-  const height = 60;
-  const width = 120;
-  const max = Math.max(...data.map(d => d.value));
-  const points = data.map((d, i) => {
-    const x = (i / (data.length - 1)) * width;
-    const y = height - (d.value / max) * height;
-    return `${x},${y}`;
-  }).join(' ');
-
-  return (
-    <svg width={width} height={height} className="overflow-visible">
-      <polyline
-        fill="none"
-        stroke={color}
-        strokeWidth="2"
-        points={points}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* Area under curve */}
-      <polyline
-        fill={color}
-        fillOpacity="0.1"
-        stroke="none"
-        points={`${points} ${width},${height} 0,${height}`}
-      />
+const Icons = {
+  Leaf: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.77 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
     </svg>
-  );
+  ),
+  Building: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>
+    </svg>
+  ),
+  Users: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  Chart: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>
+    </svg>
+  ),
+  FileText: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
+    </svg>
+  ),
+  ArrowRight: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+    </svg>
+  ),
+  Menu: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
+    </svg>
+  ),
+  X: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+    </svg>
+  )
 };
 
-const StatCard = ({ title, value, icon: Icon, trend, data }) => (
-  <Card className="p-6 flex flex-col justify-between hover:shadow-md transition-shadow duration-200">
-    <div className="flex justify-between items-start mb-4">
-      <div className="p-2 bg-slate-50 rounded-lg border border-slate-100">
-        <Icon className="w-5 h-5 text-slate-600" />
-      </div>
-      {trend && (
-        <Badge type="success">
-          <span className="flex items-center gap-1">
-            +{trend}% <ArrowUpRight className="w-3 h-3" />
-          </span>
-        </Badge>
-      )}
+/**
+ * STYLES (Injected directly to fix "Plain Text" issue)
+ * ------------------------------------------------------------------
+ */
+const styles = `
+  .eq-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f8fafc; min-height: 100vh; display: flex; color: #0f172a; }
+  .eq-sidebar { width: 260px; background: white; border-right: 1px solid #e2e8f0; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
+  .eq-logo-area { padding: 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 20px; color: #064e3b; }
+  .eq-logo-icon { width: 32px; height: 32px; background: #d1fae5; color: #059669; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .eq-nav { padding: 16px; flex: 1; }
+  .eq-nav-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; color: #64748b; border: none; background: none; width: 100%; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+  .eq-nav-item:hover { background: #f1f5f9; color: #0f172a; }
+  .eq-nav-item.active { background: #eff6ff; color: #1d4ed8; }
+  
+  .eq-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .eq-header { background: white; border-bottom: 1px solid #e2e8f0; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }
+  .eq-header-mobile { display: none; padding: 16px; background: white; border-bottom: 1px solid #e2e8f0; align-items: center; justify-content: space-between; }
+  
+  .eq-content { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+  
+  .eq-title-section { margin-bottom: 32px; }
+  .eq-title { font-size: 28px; font-weight: 700; color: #0f172a; margin: 0 0 8px 0; }
+  .eq-subtitle { color: #64748b; font-size: 16px; margin: 0; max-width: 600px; line-height: 1.5; }
+  
+  .eq-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+  
+  .eq-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .eq-stat-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
+  .eq-stat-icon { padding: 8px; background: #f8fafc; border-radius: 8px; color: #475569; }
+  .eq-stat-label { font-size: 14px; font-weight: 500; color: #64748b; margin: 0 0 4px 0; }
+  .eq-stat-value { font-size: 28px; font-weight: 700; color: #0f172a; margin: 0; }
+  
+  .eq-action-btn { width: 100%; text-align: left; display: flex; align-items: center; gap: 16px; padding: 20px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.2s; }
+  .eq-action-btn:hover { border-color: #3b82f6; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1); }
+  .eq-action-icon { width: 48px; height: 48px; background: #eff6ff; color: #2563eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .eq-action-text h4 { margin: 0 0 4px 0; font-size: 16px; color: #0f172a; }
+  .eq-action-text p { margin: 0; font-size: 13px; color: #64748b; }
+  
+  .eq-badge { padding: 4px 8px; background: #ecfdf5; color: #047857; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  
+  @media (max-width: 1024px) {
+    .eq-sidebar, .eq-header { display: none; }
+    .eq-header-mobile { display: flex; }
+    .eq-grid { grid-template-columns: 1fr; }
+    .eq-content { padding: 16px; }
+  }
+`;
+
+/**
+ * COMPONENTS
+ * ------------------------------------------------------------------
+ */
+
+const StatCard = ({ title, value, icon: Icon, trend }) => (
+  <div className="eq-card">
+    <div className="eq-stat-header">
+      <div className="eq-stat-icon"><Icon /></div>
+      {trend && <span className="eq-badge">+{trend}%</span>}
     </div>
-    <div className="flex justify-between items-end">
-      <div>
-        <h3 className="text-slate-500 text-sm font-medium mb-1">{title}</h3>
-        <p className="text-2xl font-bold text-slate-900">{value}</p>
-      </div>
-      {data && <TrendChart data={data} />}
+    <div>
+      <h3 className="eq-stat-label">{title}</h3>
+      <p className="eq-stat-value">{value}</p>
     </div>
-  </Card>
+  </div>
 );
 
 const ActionButton = ({ icon: Icon, title, description, onClick }) => (
-  <button 
-    onClick={onClick}
-    className="w-full text-left group p-4 rounded-xl border border-slate-200 bg-white hover:border-blue-500 hover:ring-1 hover:ring-blue-500 transition-all duration-200 flex items-center gap-4"
-  >
-    <div className="p-3 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-      <Icon className="w-6 h-6" />
+  <button className="eq-action-btn" onClick={onClick}>
+    <div className="eq-action-icon"><Icon /></div>
+    <div className="eq-action-text" style={{ flex: 1 }}>
+      <h4>{title}</h4>
+      <p>{description}</p>
     </div>
-    <div className="flex-1">
-      <h4 className="font-semibold text-slate-900 group-hover:text-blue-700">{title}</h4>
-      <p className="text-sm text-slate-500 mt-1">{description}</p>
-    </div>
-    <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-blue-500 transform group-hover:translate-x-1 transition-all" />
+    <div style={{ color: '#cbd5e1' }}><Icons.ArrowRight /></div>
   </button>
 );
 
-/**
- * MAIN DASHBOARD VIEW
- * ------------------------------------------------------------------
- */
-const DashboardView = ({ navigate }) => {
-  return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
-            EcoQuest Government Dashboard
-          </h1>
-          <p className="text-slate-500 mt-2 max-w-2xl">
-            View state-wide engagement metrics, completed challenges, and student progress from the EcoQuest gamified platform.
-          </p>
-        </div>
-        <div className="flex gap-3">
-           <button className="px-4 py-2 bg-white border border-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">
-            Download PDF
-           </button>
-           <button className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-            Export Data
-           </button>
-        </div>
-      </div>
-
-      {/* KPI Section */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-slate-800">Regional Impact Overview</h2>
-          <span className="text-sm text-slate-400">Last updated: Just now</span>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <StatCard 
-            title="Total Participation" 
-            value={MOCK_DATA.totalParticipation} 
-            icon={Users}
-            trend={12.5}
-            data={MOCK_DATA.monthlyGrowth}
-          />
-          <StatCard 
-            title="Schools Registered" 
-            value={MOCK_DATA.registeredSchools} 
-            icon={Building2} 
-            trend={4.2}
-            data={[...MOCK_DATA.monthlyGrowth].reverse()} // Just for visual variety
-          />
-          <StatCard 
-            title="Avg. Eco-Score" 
-            value={`${MOCK_DATA.avgEcoScore}%`} 
-            icon={Leaf}
-            trend={1.8}
-            data={MOCK_DATA.monthlyGrowth}
-          />
-        </div>
-      </section>
-
-      {/* Quick Actions Grid */}
-      <section>
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">Reporting & Policy Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <ActionButton 
-            onClick={() => navigate('schools')}
-            icon={BarChart3}
-            title="School Performance"
-            description="Detailed analytics on curriculum adoption and student engagement."
-          />
-          <ActionButton 
-            onClick={() => navigate('ngo')}
-            icon={Users}
-            title="NGO Collaboration"
-            description="Track partnership metrics and funding allocation across regions."
-          />
-          <ActionButton 
-            onClick={() => navigate('policy')}
-            icon={FileText}
-            title="Generate Policy Report"
-            description="AI-assisted summary of environmental impact for legislative review."
-          />
-        </div>
-      </section>
-    </div>
-  );
-};
-
-/**
- * PLACEHOLDER PAGE (For Simulation)
- * ------------------------------------------------------------------
- */
-const PlaceholderPage = ({ title, onBack }) => (
-  <div className="max-w-4xl mx-auto py-12 text-center animate-in fade-in zoom-in-95 duration-300">
-    <div className="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-      <FileText className="w-10 h-10 text-slate-400" />
-    </div>
-    <h2 className="text-2xl font-bold text-slate-900 mb-2">{title}</h2>
-    <p className="text-slate-500 mb-8">This module is currently under active development.</p>
-    <button 
-      onClick={onBack}
-      className="px-6 py-2.5 bg-white border border-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors"
-    >
-      Return to Dashboard
-    </button>
-  </div>
-);
-
-/**
- * MAIN APP SHELL
- * ------------------------------------------------------------------
- */
-const App = () => {
+const GovernmentDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Router Logic Simulation
-  const renderContent = () => {
-    switch(activeTab) {
-      case 'dashboard': return <DashboardView navigate={setActiveTab} />;
-      case 'schools': return <PlaceholderPage title="School Performance Reports" onBack={() => setActiveTab('dashboard')} />;
-      case 'ngo': return <PlaceholderPage title="NGO Collaboration Data" onBack={() => setActiveTab('dashboard')} />;
-      case 'policy': return <PlaceholderPage title="Policy Generation Engine" onBack={() => setActiveTab('dashboard')} />;
-      default: return <DashboardView navigate={setActiveTab} />;
-    }
-  };
 
   const NavItem = ({ id, label, icon: Icon }) => (
     <button 
       onClick={() => { setActiveTab(id); setIsMobileMenuOpen(false); }}
-      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-        activeTab === id 
-          ? 'bg-blue-50 text-blue-700' 
-          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-      }`}
+      className={`eq-nav-item ${activeTab === id ? 'active' : ''}`}
     >
-      <Icon className="w-5 h-5" />
+      <div style={{ width: 20 }}><Icon /></div>
       {label}
     </button>
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex">
+    <div className="eq-container">
+      <style>{styles}</style>
       
-      {/* Sidebar Navigation (Desktop) */}
-      <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 h-screen sticky top-0">
-        <div className="p-6 border-b border-slate-100">
-          <div className="flex items-center gap-2 text-blue-800 font-bold text-xl">
-            {/* Replaced Image with reliable Icon Component */}
-            <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
-              <Leaf className="w-5 h-5 fill-current" />
-            </div>
-            <span className="text-emerald-900">EcoQuest</span>
+      {/* Sidebar (Desktop) */}
+      <aside className="eq-sidebar">
+        <div className="eq-logo-area">
+          <div className="eq-logo-icon">
+            <Icons.Leaf />
           </div>
+          EcoQuest
         </div>
-        
-        <div className="p-4 space-y-1 flex-1 overflow-y-auto">
-          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-4">Overview</div>
-          <NavItem id="dashboard" label="Dashboard" icon={BarChart3} />
-          <NavItem id="schools" label="Schools" icon={Building2} />
-          <NavItem id="ngo" label="NGO Partners" icon={Users} />
-          
-          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-3 mt-8">Analysis</div>
-          <NavItem id="policy" label="Policy Reports" icon={FileText} />
-        </div>
-
-        <div className="p-4 border-t border-slate-100">
-          <button className="flex items-center gap-3 w-full px-3 py-2 rounded-lg hover:bg-slate-50 transition-colors text-left">
-            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">
-              GO
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-medium text-slate-900 truncate">Gov. Official</p>
-              <p className="text-xs text-slate-500 truncate">admin@state.gov</p>
-            </div>
-            <ChevronDown className="w-4 h-4 text-slate-400" />
-          </button>
+        <div className="eq-nav">
+          <NavItem id="dashboard" label="Dashboard" icon={Icons.Chart} />
+          <NavItem id="schools" label="Schools" icon={Icons.Building} />
+          <NavItem id="ngo" label="NGO Partners" icon={Icons.Users} />
+          <NavItem id="policy" label="Policy Reports" icon={Icons.FileText} />
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        
+      {/* Main Content */}
+      <div className="eq-main">
         {/* Mobile Header */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-10 px-4 py-3 flex items-center justify-between lg:hidden">
-          <div className="flex items-center gap-2 font-bold text-slate-900">
-             {/* Replaced Image with reliable Icon Component */}
-             <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center text-emerald-600">
-              <Leaf className="w-5 h-5 fill-current" />
+        <header className="eq-header-mobile">
+          <div className="eq-logo-area" style={{ padding: 0, border: 'none' }}>
+            <div className="eq-logo-icon">
+              <Icons.Leaf />
             </div>
-            <span className="text-emerald-900">EcoQuest</span>
+            EcoQuest
           </div>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
-            {isMobileMenuOpen ? <X /> : <Menu />}
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} style={{ background: 'none', border: 'none' }}>
+            {isMobileMenuOpen ? <Icons.X /> : <Icons.Menu />}
           </button>
         </header>
 
-        {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-slate-200 p-4 space-y-2 absolute top-16 left-0 right-0 z-20 shadow-xl">
-             <NavItem id="dashboard" label="Dashboard" icon={BarChart3} />
-             <NavItem id="schools" label="Schools" icon={Building2} />
-             <NavItem id="ngo" label="NGO Partners" icon={Users} />
-             <NavItem id="policy" label="Policy Reports" icon={FileText} />
+          <div style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '16px' }}>
+             <NavItem id="dashboard" label="Dashboard" icon={Icons.Chart} />
+             <NavItem id="schools" label="Schools" icon={Icons.Building} />
+             <NavItem id="ngo" label="NGO Partners" icon={Icons.Users} />
           </div>
         )}
 
-        {/* Desktop Topbar */}
-        <header className="hidden lg:flex bg-white border-b border-slate-200 px-8 py-4 items-center justify-between sticky top-0 z-10">
-          <div className="relative w-96">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-            <input 
-              type="text" 
-              placeholder="Search schools, regions, or metrics..." 
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+        <main className="eq-content">
+          <div className="eq-title-section">
+            <h1 className="eq-title">EcoQuest Government Dashboard</h1>
+            <p className="eq-subtitle">
+              View state-wide engagement metrics, completed challenges, and student progress from the EcoQuest gamified platform.
+            </p>
+          </div>
+
+          <div className="eq-grid">
+            <StatCard 
+              title="Total Participation" 
+              value="50,000" 
+              icon={Icons.Users}
+              trend={12.5}
+            />
+            <StatCard 
+              title="Schools Registered" 
+              value="120" 
+              icon={Icons.Building} 
+              trend={4.2}
+            />
+            <StatCard 
+              title="Avg. Eco-Score" 
+              value="78%" 
+              icon={Icons.Leaf}
+              trend={1.8}
             />
           </div>
-          <div className="flex items-center gap-4">
-            <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-            </button>
-          </div>
-        </header>
 
-        {/* Scrollable Content */}
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-          <div className="max-w-6xl mx-auto">
-            {renderContent()}
+          <h2 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '16px', color: '#1e293b' }}>
+            Quick Actions
+          </h2>
+          
+          <div className="eq-grid">
+            <ActionButton 
+              onClick={() => setActiveTab('schools')}
+              icon={Icons.Chart}
+              title="School Performance"
+              description="Analytics on curriculum adoption."
+            />
+            <ActionButton 
+              onClick={() => setActiveTab('ngo')}
+              icon={Icons.Users}
+              title="NGO Collaboration"
+              description="Track partnership metrics."
+            />
+            <ActionButton 
+              onClick={() => setActiveTab('policy')}
+              icon={Icons.FileText}
+              title="Generate Policy Report"
+              description="AI-assisted summary for review."
+            />
           </div>
         </main>
       </div>
@@ -362,4 +240,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default GovernmentDashboard;
