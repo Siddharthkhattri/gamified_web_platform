@@ -238,7 +238,7 @@
 .leaf-animation {
   position: absolute;
   font-size: 4rem;
-  animation: float 10s infinite ease-in-out;
+  animation: float 50s infinite ease-in-out;
 }
 
 .leaf-1 {
@@ -259,6 +259,12 @@
   right: 0%;
   font-size: 5rem;
   animation-delay: 6s;
+}
+.leaf-4 {
+  top: 20%;
+  left: 50%;
+  font-size: 4rem;
+  animation-delay: 9s;
 }
 
 @keyframes float {

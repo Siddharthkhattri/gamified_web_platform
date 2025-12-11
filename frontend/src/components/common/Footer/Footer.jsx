@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container">
         <div className="footer-content">
-          <p>&copy; {new Date().getFullYear()} EcoLearn. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} EcoQuest. All rights reserved.</p>
           <div className="footer-links">
             <a href="/terms">Terms of Service</a>
             <a href="/privacy">Privacy Policy</a>

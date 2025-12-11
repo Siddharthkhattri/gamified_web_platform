@@ -56,7 +56,10 @@ const Hero = () => {
                 <div className="leaf-animation leaf-1">🍃</div>
                 <div className="leaf-animation leaf-2">🌱</div>
                 <div className="leaf-animation leaf-3">🌿</div>
-                <div className="circle-gradient"></div>
+                <div className="leaf-animation leaf-4">🍀</div>
+               <div className="illustration-content">
+               <div className="circle-gradient"></div>
+      ></div>
               </div>
             </div>
           </div>
