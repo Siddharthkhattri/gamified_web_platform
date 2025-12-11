@@ -1,8 +1,6 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Sidebar from '../components/common/Sidebar/Sidebar'; // Corrected Path
-
 // import './DashboardLayout.css'; 
 
 const DashboardLayout = () => {
@@ -18,7 +16,6 @@ const DashboardLayout = () => {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar userRole={user?.role || 'student'} />
       <main className="dashboard-main-content">
         <Outlet /> 
       </main>
